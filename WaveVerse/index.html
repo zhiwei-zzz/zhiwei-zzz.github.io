@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scalable RF Simulation in Generative 4D Worlds</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Scalable RF Simulation in Generative 4D Worlds</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://zhiwei-zzz.github.io/">Zhiwei Zheng</a>,</span>
+            <span class="author-block">
+              <a href="">Dongyin Hu</a>,</span>
+            <span class="author-block">
+              <a href="https://www.cis.upenn.edu/~mingminz/">Mingmin Zhao</a>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">University of Pennsylvania</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code(HMG)</span>
+                  </a>
+              </span>
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code(Scene)</span>
+                  </a>
+              </span>
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code(Simulator)</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img id="teaser"
+     src="./static/images/teaser-new.svg"
+     alt="teaser figure"
+     style="max-width:none; width:185%; height:auto; display:block; position:relative; left:50%; transform:translateX(-50%);">
+      <h2>
+        WaveVerse simulates RF signals within the generated 4D worlds.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Radio Frequency (RF) sensing has emerged as a powerful, privacy-preserving alternative to vision-based methods for indoor perception tasks. However, collecting high-quality RF data in dynamic and diverse indoor environments remains a major challenge.
+          </p>
+          <p>
+            To address this, we introduce WaveVerse, a prompt-based, scalable framework that simulates realistic RF signals from generated indoor scenes with human motions. WaveVerse introduces a language-guided 4D world generator, which includes a state-aware causal transformer for human motion generation conditioned on spatial constraints and texts, and a phase-coherent ray tracing simulator that enables the simulation of accurate and coherent RF signals. 
+          </p>
+          <p>
+            Experiments demonstrate the effectiveness of our approach in conditioned human motion generation and highlight how phase coherence is applied to beamforming and respiration monitoring. We further present two case studies in ML-based high-resolution imaging and human activity recognition, demonstrating that WaveVerse not only enables data generation for RF imaging for the first time, but also consistently achieves performance gain in both data-limited and data-adequate scenarios.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+      </div>
+    </section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Paper video. -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">Improvement with Simulated Data</h2>
+        </div>
+
+        <div class="hero-body">
+      <img id="teaser"
+     src="./static/images/quantatitive.svg"
+     alt="teaser figure"
+     style="max-width:none; width:100%; height:auto; display:block; position:relative; left:50%; transform:translateX(-50%);">
+     <h2 >
+       Performance comparison over the baseline with varying amounts of additional real and simulated data on: (a) high-resolution RF imaging and (b) human activity recognition. BL: Baseline.
+      </h2>
+      </div>
+    </div>
+
+
+    
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">Supplementary Visualization</h2>
+        </div>
+        <div class="content has-text-justified">
+          <p >Below, we present qualitative results for text- and path-conditioned human motion generation, 4D world generation,
+            and Doppler estimation.
+          </p>
+        </div>
+
+
+
+        <!-- Re-rendering. -->
+        <h3 class="title is-">Conditional Human Motion Generation</h3>
+        <div class="content has-text-justified">
+          <p>
+            For conditonal human motion generation. We begin with customized conditions to highlight the capabilities of our model, 
+            followed by qualitative examples from the test set of the HumanML3D dataset.
+          </p>
+        </div>
+
+        <h4 class="title is-5">Varying Path Lengths</h4>
+
+
+        <!-- for the path length variation -->
+        <div class="content has-text-justified">
+            <p>We first fix the text condition to <em>“walk”</em>, maintain the path direction but vary path lengths of 1,
+               3, 5, and 7 meters. Paths are colored from <strong>blue</strong> (start) to <strong>red</strong> (end).
+            </p>
+        </div>
+
+        <div class="columns is-multiline is-centered is-variable is-3">
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/1m.mp4"></video>
+              <figcaption>Path length: 1 m</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/3m.mp4"></video>
+              <figcaption>Path length: 3 m</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/5m.mp4"></video>
+              <figcaption>Path length: 5 m</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/7m.mp4"></video>
+              <figcaption>Path length: 7 m</figcaption>
+            </figure>
+          </div>
+        </div>
+
+
+        <!-- for the path direction variation -->
+
+        <h4 class="title is-5">Varying Path Directions</h4>
+        <div class="content has-text-justified">
+              <p>We then change the text to <em>“slowly walk”</em> and the path length is fixed. However, we vary 
+                path directions at ±90°, ±45° and ±30°.</p>
+        </div>
+
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/-90.mp4"></video>
+              <figcaption>Path direction: –90°</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/90.mp4"></video>
+              <figcaption>Path direction: 90°</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/-45.mp4"></video>
+              <figcaption>Path direction: –45°</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/45.mp4"></video>
+              <figcaption>Path direction: 45°</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/-30.mp4"></video>
+              <figcaption>Path direction: –30°</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/30.mp4"></video>
+              <figcaption>Path direction: 30°</figcaption>
+            </figure>
+          </div>
+        </div>
+
+
+        <!-- for the text variation -->
+        <h4 class="title is-5">Varying Text Descriptions</h4>
+        <div class="content has-text-justified">
+                <p>Now, we adopt the same path direction and length. However, we change the text to: <em>jump</em>, 
+                  <em>run</em>, <em>walk as if there are stairs in the front</em>, and <em>wave their arms</em>. 
+                </p>
+
+        </div>
+
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/jump.mp4"></video>
+              <figcaption>Text: Jump</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/run.mp4"></video>
+              <figcaption>Text: Run</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/stair.mp4"></video>
+              <figcaption>Text: Walk as if there are stairs in the front</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/wave.mp4"></video>
+              <figcaption>Text: Wave their arms</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- random combination variation -->
+
+        <h4 class="title is-5">Random Combinations</h4>
+        <div class="content has-text-justified">
+                  <p>We show the generalization of the model to random text/path combinations.
+                  </p>
+        </div>
+
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/run-rand.mp4"></video>
+              <figcaption>Run; 8 m; 30°</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/jump-rand.mp4"></video>
+              <figcaption>Jump; 2.5 m; –90°</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/stair-rand.mp4"></video>
+              <figcaption>Walk as if there are stairs in the front; 3.5 m; 45°</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls src="static/motions/wave-rand.mp4"></video>
+              <figcaption>Wave arms; 2.0 m; –30°</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- random combination variation -->
+        <h4 class="title is-5">Performance on HumanML3D</h4>
+        <div class="content has-text-justified">
+                  <p>We provide qualitative results on the HumanML3D test set.
+                  </p>
+        </div>
+
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/1.mp4"></video>
+              <figcaption>Text: The person takes a step and waves his right hand back and forth.</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/6.mp4"></video>
+              <figcaption>Text: The person was pushed but did not fall.</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/2.mp4"></video>
+              <figcaption>Text: A man walks backwards and then stops.</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/3.mp4"></video>
+              <figcaption>Text: A person walks in a circular motion.</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/5.mp4"></video>
+              <figcaption>Text: A person begins walking forward first with their left foot, taking wide awkward steps as if they are stepping around or over something; begins walking towards the right and then slowly continues to walk to the left, then continues to walk towards the right coming to a stop off to the right side.</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/4.mp4"></video>
+              <figcaption>Text: A person bends to the right.</figcaption>
+            </figure>
+          </div>
+
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/7.mp4"></video>
+              <figcaption>Text: A figure tip toes around while walking in a slalom like motion.</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/motions/8.mp4"></video>
+              <figcaption>Text: A person who is walking moves forward taking six confident strides.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+
+        <h3 class="title is-">Generated 4D World</h3>
+        <div class="content has-text-justified">
+          <p>
+            We present a series of dynamic 4D scenes generated by WaveVerse.
+          </p>
+        </div>
+      
+        <div class="columns is-multiline is-centered">
+          <!-- Pair 1 -->
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <img src="static/generated_world/gallery.png" alt="Bird’s-eye view 1" class="motion-media">
+              <figcaption>A broad gallery; Slowly tour around</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-media" src="static/generated_world/gallery.mp4"></video>
+              <figcaption>Close-up View of Motion</figcaption>
+            </figure>
+          </div>
+
+          <!-- Pair 2 -->
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <img src="static/generated_world/y-shaped.png" alt="Bird’s-eye view 2" class="motion-media">
+              <figcaption>A hallway; Wave the arm</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-media" src="static/generated_world/y-shaped.mp4"></video>
+              <figcaption>Close-up View of Motion</figcaption>
+            </figure>
+          </div>
+
+          <!-- Pair 3 -->
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <img src="static/generated_world/zigzag.png" alt="Bird’s-eye view 3" class="motion-media">
+              <figcaption>A zigzag hallway; Navigate</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-media" src="static/generated_world/zigzag.mp4"></video>
+              <figcaption>Close-up View of Motion</figcaption>
+            </figure>
+          </div>
+
+          <!-- Pair 4 -->
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <img src="static/generated_world/keyhole.png" alt="Bird’s-eye view 4" class="motion-media">
+              <figcaption>A keyhole-shaped hallway; Bend to pick something up</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-media" src="static/generated_world/keyhole.mp4"></video>
+              <figcaption>Close-up View of Motion</figcaption>
+            </figure>
+          </div>
+
+          <!-- Pair 5 -->
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <img src="static/generated_world/cabin.png" alt="Bird’s-eye view 5" class="motion-media">
+              <figcaption>A cozy cabin kitchen; Walk to retrieve items</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-media" src="static/generated_world/cabin.mp4"></video>
+              <figcaption>Close-up View of Motion</figcaption>
+            </figure>
+          </div>
+
+          <!-- Pair 6 -->
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <img src="static/generated_world/winding.png" alt="Bird’s-eye view 6" class="motion-media">
+              <figcaption>A winding corridor; Walk</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-media" src="static/generated_world/winding.mp4"></video>
+              <figcaption>Close-up View of Motion</figcaption>
+            </figure>
+          </div>
+
+          <!-- Pair 7 -->
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <img src="static/generated_world/L-shaped.png" alt="Bird’s-eye view 7" class="motion-media">
+              <figcaption>An L-shaped hallway; Quickly Move</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-media" src="static/generated_world/L-shaped.mp4"></video>
+              <figcaption>Close-up View of Motion</figcaption>
+            </figure>
+          </div>
+
+          <!-- Pair 8 -->
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <img class="motion-media" src="static/generated_world/bathroom.png" alt="Bird’s-eye view 1">
+              <figcaption>A chic bathroom; Walk and almost slip</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-media" src="static/generated_world/bathroom.mp4"></video>
+              <figcaption>Close-up View of Motion</figcaption>
+            </figure>
+          </div>
+
+          <!-- Pair 9 -->
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <img class="motion-media" src="static/generated_world/u-shaped.png" alt="Bird’s-eye view 2">
+              <figcaption>A U-shaped hallway; Jump</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-media" src="static/generated_world/u-shaped.mp4"></video>
+              <figcaption>Close-up View of Motion</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <img class="motion-media" src="static/generated_world/music.png" alt="Bird’s-eye view 1">
+              <figcaption>A classic music room; Dance</figcaption>
+            </figure>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls class="motion-media" src="static/generated_world/music.mp4"></video>
+              <figcaption>Close-up View of Motion</figcaption>
+            </figure>
+          </div>
+
+        </div>
+
+
+
+        <h3 class="title is-">Doppler Estimation</h3>
+        <div class="content has-text-justified">
+          <p>
+            We simulate a sphere moving back and forth with sinusoidal velocity, observed by a radar. 
+            The range-velocity maps reveal the expected sinusoidal pattern and a narrow velocity band across multiple range bins due to the sphere’s extent. Our method, with temporal phase coherence, yields much cleaner maps than conventional ray tracing.
+          </p>
+        </div>
+
+        <div class="columns is-centered">
+          <div class="column is-8 has-text-centered">
+            <figure>
+              <video controls class="motion-video" src="static/Doppler_comparison.mp4"></video>
+            </figure>
+          </div>
+        </div>
+
+
+
+
+      </div>
+    </div>
+    <!--/ Animation. -->
+
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>Placeholder</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            Website source code based on the <a
+              href="https://nerfies.github.io/">Nerfies</a> project page. If you want to reuse their <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a>, please credit them appropriately.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
