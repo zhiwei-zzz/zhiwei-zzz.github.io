@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Next-Scale Autoregressive Models for Text-to-Motion Generation</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7Q4BFHP9F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Q7Q4BFHP9F');
+  </script>
+<body>
+
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Next-Scale Autoregressive Models for Text-to-Motion Generation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://zhiwei-zzz.github.io/">Zhiwei Zheng</a>,</span>
+            <span class="author-block">
+              <a href="">Shibo Jin</a>,</span>
+              <span class="author-block">
+              <a href="">Lingjie Liu</a>,</span>
+            <span class="author-block">
+              <!-- <a href="https://www.cis.upenn.edu/~mingminz/">Mingmin Zhao</a>, -->
+               <a href="">Mingmin Zhao</a>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">University of Pennsylvania</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img id="teaser"
+     src="./static/images/teaser-latest-web.png"
+     alt="teaser figure"
+     style="max-width: 100%; width: 100%; height:auto; display:block; position:relative; left:50%; transform:translateX(-50%);">
+      <h2>
+        MoScale accurately captures global semantic structure in text descriptions, such as two jumping jacks and backward zigzag, where prior diffusion(ReMoDiffuse), masked-transformer(MoMask++), and next-token autoregressive models(ParCo) fail.
+        Its next-scale autoregressive design with hierarchical causality enables MoScale to preserve these long-range semantics while maintaining realistic motion.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Autoregressive (AR) models offer stable and efficient training, but standard next-token prediction is not well aligned with 
+            the temporal structure required for text-conditioned motion generation. We introduce MoScale, a next-scale AR framework 
+            that generates motion hierarchically from coarse to fine temporal resolutions. By providing global semantics at the coarsest 
+            scale and refining them progressively, MoScale establishes a causal hierarchy better suited for long-range motion structure. 
+            To improve robustness under limited text–motion data, we further incorporate cross-scale hierarchical refinement for improving 
+            coarse-scale predictions and in-scale temporal refinement for selective bidirectional re-prediction. MoScale achieves 
+            state-of-the-art text-to-motion performance with high training efficiency, scales effectively with model size, and 
+            generalizes zero-shot to diverse motion generation and editing tasks.          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+      </div>
+    </section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <style>
+      .row-caption {
+        font-style: italic;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      .method-name {
+        font-weight: 600;
+        text-align: center;
+      }
+      .deepblue {
+        color: #32A1DB;
+      }
+      .deepred {
+        color: #ED1C24;
+      }
+      .gen-smpl-blue-new {
+        color: #09529D;
+      }
+      .gen-smpl-orange {
+        color: #A83703;
+      }
+    </style>
+
+    <!-- Title -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="columns is-centered has-text-centered">
+          <h2 class="title is-3">Supplementary Material</h2>
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            Below, we present qualitative results for text-to-motion generation, including comparisons with prior methods,
+            as well as zero-shot conditional and unconditional motion inpainting, outpainting, editing, and continuous motion generation.
+          </p>
+
+          <p>
+            Note: We follow the standard visualization pipeline, using the SMPL fitting pipeline in MLD [1], as adopted in other text-to-motion works.
+            This pipeline is known to sometimes produce abrupt changes in human shape during SMPL fitting, which often come with discontinuous poses.
+            These artifacts are caused by the fitting stage rather than motion generation and can also be observed when visualizing the real motions.
+            We can provide the original skeleton visualizations if needed.
+          </p>
+        </div>
+
+        <!-- Text-to-Motion Generation -->
+        <h3 class="title is-4">Text-to-Motion Generation</h3>
+        <div class="content has-text-justified">
+          <p>
+            We provide qualitative results for text-to-motion generation, including comparisons with MoMask++, ParCo and ReMoDiffuse.
+            For ReMoDiffuse, we do not apply the post-process temporal filtering adopted in the original codebase for a fair comparison.
+          </p>
+        </div>
+
+        <!-- Method names row -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-quarter">
+            <p class="method-name">Ours (Next-Scale AR)</p>
+          </div>
+          <div class="column is-one-quarter">
+            <p class="method-name">MoMask++ (MaskedTrans)</p>
+          </div>
+          <div class="column is-one-quarter">
+            <p class="method-name">ParCo (Next-Token AR)</p>
+          </div>
+          <div class="column is-one-quarter">
+            <p class="method-name">ReMoDiffuse (Diffusion)</p>
+          </div>
+        </div>
+
+        <!-- Row 1 -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "The person stands up while <span class="deepblue">holding their right hand above their head</span>."
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/ours_sample1_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/sanpmogen_sample1_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/parco_sample1_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/remodiffuse_sample1_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "Running forward taking a <span class="deepblue">right turn</span> then running to the <span class="deepred">left</span>."
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/ours_sample2_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/sanpmogen_sample2_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/parco_sample2_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/remodiffuse_sample2_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "Person stands <span class="deepblue">still</span> with both arms raised at <span class="deepred">shoulder height</span>."
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/ours_sample3_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/sanpmogen_sample3_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/parco_sample3_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/remodiffuse_sample3_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "This person does a short sprint forward, <span class="deepblue">holding their arms up to their chest</span>."
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/ours_sample4_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/sanpmogen_sample4_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/parco_sample4_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/remodiffuse_sample4_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "The man walked forward, spun <span class="deepblue">right</span> on one foot and <span class="deepred">walked back</span> to his original position."
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/ours_sample5_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/sanpmogen_sample5_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/parco_sample5_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/t2m/remodiffuse_sample5_pred_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            In the above examples, our method demonstrates clear improvements in text alignment, particularly for detailed descriptions
+            involving directions, motion sequences, adjectives, and expressive language, while maintaining high motion fidelity.
+          </p>
+        </div>
+
+        <!-- Zero-Shot Conditional Motion In/Outpainting and Editing -->
+        <h3 class="title is-4">Zero-Shot Conditional Motion In/Outpainting and Editing</h3>
+
+        <div class="content has-text-justified">
+          <p>
+            We provide qualitative results for zero-shot text-conditioned motion inpainting, outpainting, and editing, including comparisons with MoMask and BAMM.
+            We highlight the painted/edited regions with <span class="gen-smpl-blue-new">blue</span> colors. To better compare with the original motion in the unedited regions,
+            we also render the original motion in <span class="gen-smpl-blue-new">blue</span> at the corresponding timestamps where edits/paintings are applied.
+            We use <span class="gen-smpl-orange">orange</span> to represent unedited regions.
+          </p>
+
+          <p>
+            Note: We follow prior work and represent the motion with a sequence of root (pelvis) velocities, while the remaining joints are encoded as their 3D positions in the root’s
+            local coordinate system. Under this representation, preserving the unedited regions means keeping the root velocity sequence and local joint positions identical in those frames.
+            As a result, the character exhibits the same motion pattern (how it moves and poses over time) in those segments,
+            even though its absolute global positions may change if earlier parts of the motion are changed.
+          </p>
+        </div>
+
+        <!-- Method names row -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-quarter">
+            <p class="method-name">Original Motion</p>
+          </div>
+          <div class="column is-one-quarter">
+            <p class="method-name">Ours</p>
+          </div>
+          <div class="column is-one-quarter">
+            <p class="method-name">BAMM</p>
+          </div>
+          <div class="column is-one-quarter">
+            <p class="method-name">MoMask</p>
+          </div>
+        </div>
+
+        <!-- Inpainting row -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "Inpainting: The figure looks like it is picking something up and <span class="deepblue">raising it above its head</span> <span class="deepred">twice</span>."
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/inpaint/moscale-inpaint-gt.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/inpaint/moscale-inpaint.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/inpaint/bamm_inpaint.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/inpaint/momask-inpaint.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Outpainting row -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "Outpainting: <span class="deepblue">Lowering arms from shoulder height to waist</span> then bending arms 90 degrees forward and rotating circular."
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/inpaint/moscale_outpaint_gt.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/inpaint/moscale_outpaint.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/inpaint/bamm_outpaint.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/inpaint/momask_outpaint.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Editing row 1 -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "Editing: A person walks forward and then <span class="deepblue">waves the hand to the end</span>."
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/edit/ours_walk_wave_original_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/edit/ours_walk_wave_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/edit/bamm_walk_wave_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/edit/momask_walk_wave_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Editing row 2 -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "Editing: A person <span class="deepblue">keeps running forward</span>. (<span class="deepred">from 40 frames to 176 frames</span>)"
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/edit/original_runs_all_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/edit/ours_runs_all_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/edit/bamm_runs_all_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/edit/momask_runs_all_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            Our method again shows better alignment with the text instructions, and our editing can also generalize well to the change in motion length (e.g., the last example).
+            Moreover, compared to other methods, MoScale better preserves the unedited regions of the original motion, producing smoother and more natural transitions between the edited and unedited segments.
+          </p>
+        </div>
+
+        <!-- Zero-Shot Unconditional Motion In/Outpainting -->
+        <h3 class="title is-4">Zero-Shot Unconditional Motion In/Outpainting</h3>
+
+        <div class="content has-text-justified">
+          <p>
+            We show that MoScale can also perform zero-shot unconditional motion inpainting and outpainting.
+          </p>
+        </div>
+
+        <!-- Method names row -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-quarter">
+            <p class="method-name">Original Motion</p>
+          </div>
+          <div class="column is-one-quarter">
+            <p class="method-name">Generated Instance 1</p>
+          </div>
+          <div class="column is-one-quarter">
+            <p class="method-name">Generated Instance 2</p>
+          </div>
+          <div class="column is-one-quarter">
+            <p class="method-name">Generated Instance 3</p>
+          </div>
+        </div>
+
+        <!-- Unconditional inpainting row -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "Unconditional Inpainting"
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/uncond_inoutpaint/sample0_gt.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/uncond_inoutpaint/sample0_repeat0.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/uncond_inoutpaint/sample0_repeat1.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/uncond_inoutpaint/sample0_repeat2.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Unconditional outpainting row -->
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "Unconditional Outpainting"
+            </p>
+          </div>
+
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/uncond_inoutpaint/outpaint_gt.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/uncond_inoutpaint/outpaint_repeat0_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/uncond_inoutpaint/outpaint_repeat1_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+          <div class="column is-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/uncond_inoutpaint/outpaint_repeat2_mesh.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            Our method is able to generate diverse and plausible motion completions for both inpainting and outpainting tasks,
+            while maintaining coherence with the existing motion segments.
+          </p>
+        </div>
+
+        <!-- Zero-Shot Continuous Motion Generation -->
+        <h3 class="title is-4">Zero-Shot Continuous Motion Generation</h3>
+
+        <div class="content has-text-justified">
+          <p>
+            Lastly, we demonstrate that MoScale can effectively perform zero-shot continuous motion generation by
+            autoregressively generating motion with progressively provided text descriptions.
+          </p>
+        </div>
+
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="row-caption">
+              "<span class="deepred">A person stands up from a chair and walks forward</span>. →
+              <span class="deepblue">The person runs to his left</span>. →
+              <span class="deepred">The person changes to run to the right</span>. →
+              <span class="deepblue">The person suddenly stops.</span>"
+            </p>
+          </div>
+
+          <div class="column is-half is-offset-one-quarter has-text-centered">
+            <figure>
+              <video controls autoplay muted loop src="assets/cont_motion.mp4" class="motion-video"></video>
+            </figure>
+          </div>
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            [1] Chen, Xin, Biao Jiang, Wen Liu, Zilong Huang, Bin Fu, Tao Chen, and Gang Yu.
+            "Executing your commands via motion diffusion in latent space."
+            In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,
+            pp. 18000–18010. 2023.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+      Placeholder for BibTeX entry.
+</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            Website source code based on the <a
+              href="https://nerfies.github.io/">Nerfies</a> project page. If you want to reuse their <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a>, please credit them appropriately.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
