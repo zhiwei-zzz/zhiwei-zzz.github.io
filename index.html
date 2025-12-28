@@ -34,6 +34,24 @@
   }
 </style>
 
+<style>
+  /* Hide toggle images by default */
+  .toggle-img {
+    display: none;
+    margin-top: 8px;
+    max-width: 420px;      /* adjust as you like */
+    width: 100%;
+    height: auto;
+  }
+
+  /* Batmobile-specific sizing (smaller) */
+  #BatImage {
+    max-width: 320px;      /* make it smaller than the first */
+    max-height: 240px;     /* prevent giant vertical image */
+    object-fit: contain;
+  }
+</style>
+
   <body>
     <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
       <tr style="padding:0px">
@@ -204,45 +222,28 @@
               <td>
                 <h2>Miscellaneous</h2>
                 <ul>
-                <li><a href="javascript:void(0);" onclick="toggleImage();">Drones and Cars built</a>.
-
-
-                  <!-- The Image -->
-                  <img id="toggleImage" src="./images/robots.png" alt="Toggle Image">
-
-                  <script>
-                    // This function toggles the display of the image
-                    function toggleImage() {
-                      var image = document.getElementById('toggleImage');
-                      if (image.style.display === 'none' || image.style.display === '') {
-                        image.style.display = 'block';
-                      } else {
-                        image.style.display = 'none';
-                      }
-                    }
-                  </script>
+                <li>
+                  <a href="javascript:void(0);" onclick="toggleImage();">Drones and Cars built</a>
+                  <img id="toggleImage" class="toggle-img" src="./images/robots.png" alt="Drones and cars">
                 </li>
-                </ul>
-                <ul>
-                <li>LEGO fan: Spent 7 hours building <a href="javascript:void(0);" onclick="toggleImage();">Batmobile</a>.
 
-
-                  <!-- The Image -->
-                  <img id="toggleImage" src="./images/lego.png" alt="Toggle Image">
-
-                  <script>
-                    // This function toggles the display of the image
-                    function toggleImage() {
-                      var image = document.getElementById('toggleImage');
-                      if (image.style.display === 'none' || image.style.display === '') {
-                        image.style.display = 'block';
-                      } else {
-                        image.style.display = 'none';
-                      }
-                    }
-                  </script>
+                <li>
+                  LEGO fan: Spent 7 hours building
+                  <a href="javascript:void(0);" onclick="toggleImageBat();">Batmobile</a>.
+                  <img id="BatImage" class="toggle-img" src="./images/lego.png" alt="Batmobile">
                 </li>
-                </ul>
+              </ul>
+
+              <script>
+                function toggleById(id) {
+                  const image = document.getElementById(id);
+                  const isHidden = getComputedStyle(image).display === 'none';
+                  image.style.display = isHidden ? 'block' : 'none';
+                }
+
+                function toggleImage() { toggleById('toggleImage'); }
+                function toggleImageBat() { toggleById('BatImage'); }
+              </script>
               </td>
             </tr>
           </tbody></table>
