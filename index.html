@@ -204,6 +204,26 @@
               <td>
                 <h2>Miscellaneous</h2>
                 <ul>
+                <li><a href="javascript:void(0);" onclick="toggleImage();">Drones and Cars built</a>.
+
+
+                  <!-- The Image -->
+                  <img id="toggleImage" src="./images/robots.png" alt="Toggle Image">
+
+                  <script>
+                    // This function toggles the display of the image
+                    function toggleImage() {
+                      var image = document.getElementById('toggleImage');
+                      if (image.style.display === 'none' || image.style.display === '') {
+                        image.style.display = 'block';
+                      } else {
+                        image.style.display = 'none';
+                      }
+                    }
+                  </script>
+                </li>
+                </ul>
+                <ul>
                 <li>LEGO fan: Spent 7 hours building <a href="javascript:void(0);" onclick="toggleImage();">Batmobile</a>.
 
 
